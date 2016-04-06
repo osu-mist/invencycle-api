@@ -1,0 +1,64 @@
+Invencycle
+
+Tables
+
+data types in CAPITALS
+
+    bike
+        bike_id INT
+        bike_make VARCHAR(32)
+        bike_model VARCHAR(32)
+        bike_year INT
+        bike_type_id INT
+        bike_frame_size_id INT
+        bike_msrp NUMBER(8,2)
+        bike_derailuer_front_id INT
+        bike_derailuer_rear_id INT
+        bike_fork_id INT
+        bike_shock_id INT
+        bike_wheel_front_id INT
+        bike_wheel_rear_id INT
+        bike_brake_front_id INT
+        bike_brake_rear_id INT
+        bike_create_date DATE
+        bike_delete_date DATE
+
+    bike_type
+        bike_type_id INT
+        bike_type_name VARCHAR(32)
+
+    frame_size
+        frame_size_id INT
+        frame_size_name VARCHAR(32)
+
+    derailuer
+        derailuer_id INT
+        derailuer_make VARCHAR(32) 
+        derailuer_model VARCHAR(32)
+        derailuer_speeds INT
+
+    suspension
+        suspension_id INT
+        suspension_make VARCHAR(32) 
+        suspension_model VARCHAR(32)
+        suspension_travel INT
+
+    wheel
+        wheel_id INT
+        wheel_size INT
+        wheel_rim_make VARCHAR(32)
+        wheel_rim_model VARCHAR(32)
+        wheel_hub_make VARCHAR(32)
+        wheel_hub_model VARCHAR(32)
+
+    brake
+        brake_id INT
+        brake_make VARCHAR(32)
+        brake_model VARCHAR(32)
+        brake_rotor_size INT
+
+
+
+
+
+            
