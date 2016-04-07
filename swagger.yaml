@@ -1,78 +1,191 @@
 swagger: '2.0'
+
 info:
-  title: Web API Skeleton
-  description: Skeleton for Dropwizard Web APIs
-  version: '0.0'
-  license:
-    name: GNU Affero General Public License Version 3
-    url: http://www.gnu.org/licenses/agpl-3.0.en.html
-externalDocs:
-  description: GitHub Repository
-  url: https://github.com/osu-mist/web-api-skeleton
-host: localhost
-schemes:
-  - http
-basePath: /api/v0
-consumes:
-  - text/plain
-produces:
-  - text/plain
+  version: "1"
+  title: Invencycle API
+
+# Describe your paths here
 paths:
-  /:
+  # This is a path endpoint. Change it.
+  /bikes:
+    # This is a HTTP operation
     get:
-      summary: Get information
-      description: Build and runtime information about the application.
-      responses:
-        200:
-          description: Object containing information
-          schema:
-            $ref: '#/definitions/Info'
-  /sample:
-    get:
-      summary: Get message
-      description: This is a sample resource that returns a short message.
-      responses:
-        200:
-          description: A short message
-          schema:
-            type: string
-        404:
-          description: Not found
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      summary: Post message
-      description: This is a sample resource that returns the message it receives.
+      tags:
+       - bikes
+      # Describe this verb here. Note: you can use markdown
+      description: "Gets bikes and their components and specifications."
+      # This is array of GET operation parameters:
+      produces:
+        - application/json
       parameters:
-        - name: message
-          in: body
-          schema:
-            type: string
-          required: true
+        - in: query
+          name: make
+          description: "Search through bikes by brand."
+          required: false
+          type: string
+        - in: query
+          name: model
+          description: "Search through bikes by model"
+          required: false
+          type: string
+        - in: query
+          name: type
+          description: "Search through bikes by type of bike"
+          required: false
+          type: string
+        - in: query
+          name: suspension
+          description: "Search through bikes by suspension setup (none, hardtail, or full)"
+          required: false
+          type: string
+        # Expected responses for this operation:
       responses:
-        200:
-          description: The message received
+        # Response code
+        "200":
+          description: "Successful response"
           schema:
-            type: string
-        404:
-          description: Not found
+            $ref: "#/definitions/ResultObjects"
+        "404":
+          description: "Not Found"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
+        "500":
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Errors"
+
+
+  /bikes/{bikeID}:
+    get:
+      tags:
+        - bikes
+      description: "Find bikes by bike ID"
+      operationId: getLocationByBuildingID
+      produces:
+        - application/json
+      parameters:
+        - name: bikeID
+          in: path
+          description: "Bike ID to be searched by"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/ResultObject"
+        "404":
+          description: "Resource not found"
+          schema:
+            $ref: "#/definitions/Errors"
+        "500":
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Errors"
+
 definitions:
-  Info:
+  ResultObject:
     properties:
-      name:
+      links:
+        $ref: "#/definitions/Links"
+      data:
+        $ref: "#/definitions/ResourceObject"
+
+  ResultObjects:
+    properties:
+      links:
+        $ref: "#/definitions/Links"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/ResourceObject"
+        
+  ResourceObject:
+    properties:
+      id:
         type: string
-      time:
+      type:
+        type: string
+      attributes:
+        $ref: "#/definitions/Attributes"
+        
+  Attributes:
+    properties:
+      make:
+        type: string
+      model:
+        type: string
+      year: 
+        type: string
+      type: 
+        type: string
+      frame_size:
+        type: string
+      msrp:
         type: integer
-      commit:
+      front_derailuer_make:
         type: string
-      documentation:
+      front_derailuer_model:
         type: string
+      fork_make:
+        type: string
+      fork_model:
+        type: string
+      fork_travel:
+        type: integer
+      shock_make:
+        type: string
+      shock_model:
+        type: string
+      shock_travel:
+        type: integer
+      front_wheel_make:
+        type: string
+      front_wheel_model:
+        type: string
+      front_hub_make:
+        type: string
+      front_hub_model:
+        type: string
+      rear_wheel_make:
+        type: string
+      rear_wheel_model:
+        type: string
+      rear_hub_make:
+        type: string
+      rear_hub_model:
+        type: string
+      front_brake_make:
+        type: string
+      front_brake_model:
+        type: string
+      front_rotor_size:
+        type: string
+      rear_brake_make:
+        type: string
+      rear_brake_model:
+        type: string
+      rear_rotor_size:
+        type: string
+
+  Links:
+      properties:
+        self:
+          type: string
+        first:
+          type: string
+        last:
+          type: string
+        prev:
+          type: string
+        next:
+          type: string
   Error:
+    type: object
     properties:
       status:
         type: integer
+        format: int32
       developerMessage:
         type: string
       userMesage:
@@ -81,3 +194,9 @@ definitions:
         type: integer
       details:
         type: string
+
+  Errors:
+    title: ArrayOfErrors
+    type: array
+    items:
+      $ref: "#/definitions/Error"
