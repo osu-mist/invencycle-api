@@ -42,6 +42,7 @@ data types in CAPITALS
         suspension_make VARCHAR(32) 
         suspension_model VARCHAR(32)
         suspension_travel INT
+        suspension_type VARCHAR(32)
 
     wheel
         wheel_id INT
