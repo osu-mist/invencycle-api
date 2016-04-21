@@ -202,7 +202,7 @@ definitions:
       model:
         type: string
       year: 
-        type: string
+        type: integer
       type: 
         type: string
       frame_size:
@@ -212,6 +212,10 @@ definitions:
       front_derailuer_make:
         type: string
       front_derailuer_model:
+        type: string
+      rear_derailuer_make:
+        type: string
+      rear_derailuer_model:
         type: string
       fork_make:
         type: string
