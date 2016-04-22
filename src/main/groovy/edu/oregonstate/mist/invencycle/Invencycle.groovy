@@ -46,7 +46,7 @@ class Invencycle extends Application<InvencycleConfiguration> {
 
         final BikeDAO bikeDAO = jdbi.onDemand(BikeDAO.class)
 
-        environment.jersey().register(new BikeResource(BikeDAO))
+        environment.jersey().register(new BikeResource(bikeDAO))
 
 //        environment.jersey().register(
 //                AuthFactory.binder(
