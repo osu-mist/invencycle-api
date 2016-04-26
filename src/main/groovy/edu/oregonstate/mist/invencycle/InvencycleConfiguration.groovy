@@ -6,10 +6,6 @@ import io.dropwizard.db.DataSourceFactory
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
-
-/**
- * Created by jared on 4/20/16.
- */
 public class InvencycleConfiguration extends Configuration {
 
     //DataSourceFactory database = new DataSourceFactory()

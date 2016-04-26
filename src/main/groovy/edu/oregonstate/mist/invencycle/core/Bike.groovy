@@ -1,41 +1,42 @@
 package edu.oregonstate.mist.invencycle.core
 
-import net.sourceforge.argparse4j.impl.type.StringArgumentType
-
-/**
- * Created by jared on 4/20/16.
- */
 class Bike {
     Integer id
     String make
     String model
     Integer year
     String type
-    String frame_size
-    Integer price
-    String front_derailuer_make
-    String front_derailuer_model
-    String rear_derailuer_make
-    String rear_derailuer_model
+    String frame_size_name
+    Integer frame_size_cm
+    Integer msrp
+    String derailuer_make_front
+    String derailuer_model_front
+    Integer derailuer_speeds_front
+    String derailuer_make_rear
+    String derailuer_model_rear
+    Integer derailuer_speeds_rear
     String fork_make
     String fork_model
     Integer fork_travel
     String shock_make
     String shock_model
     Integer shock_travel
-    String front_wheel_make
-    String front_wheel_model
-    String front_hub_make
-    String front_hub_model
-    String rear_wheel_make
-    String rear_wheel_model
-    String rear_hub_make
-    String rear_hub_model
-    String front_brake_make
-    String front_brake_model
-    Integer front_rotor_size
-    String rear_brake_make
-    String rear_brake_model
-    Integer rear_rotor_size
+    String rim_make_front
+    String rim_model_front
+    Integer wheel_size_front
+    String hub_make_front
+    String hub_model_front
+    String rim_make_rear
+    String rim_model_rear
+    Integer wheel_size_rear
+    String hub_make_rear
+    String hub_model_rear
+    String brake_make_front
+    String brake_model_front
+    Integer brake_rotor_size_front
+    String brake_make_rear
+    String brake_model_rear
+    Integer brake_rotor_size_rear
+
 
 }
