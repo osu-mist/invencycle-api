@@ -51,13 +51,7 @@ class BikeResource extends Resource {
         if (bikes == null) {
 
             returnResponse = notFound().build()
-
-            //Error returnError = new Error(notFound())
-            //returnResponse = Response.status(Response.Status.NOT_FOUND).entity(returnError).build()
-
-
-            //ErrorPOJO returnError = new ErrorPOJO(errorMessage: "Resource Not Found.", errorCode: Response.Status.NOT_FOUND.getStatusCode())
-            //returnResponse = Response.status(Response.Status.NOT_FOUND).entity(returnError).build()
+            
         } else {
 
             returnResponse = ok(bikes).build()
