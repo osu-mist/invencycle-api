@@ -1,14 +1,17 @@
 package edu.oregonstate.mist.invencycle.db
 
 import edu.oregonstate.mist.invencycle.core.Bike
-import edu.oregonstate.mist.invencycle.mapper.bikemapper
+import edu.oregonstate.mist.invencycle.mapper.BikeMapper
+import org.jvnet.hk2.internal.Closeable
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
 import org.skife.jdbi.v2.sqlobject.SqlQuery
 import org.skife.jdbi.v2.sqlobject.SqlUpdate
 import org.skife.jdbi.v2.sqlobject.Bind
 
-@RegisterMapper(bikemapper)
-public interface BikeDAO {
+import javax.validation.OverridesAttribute
+
+@RegisterMapper(BikeMapper)
+public interface BikeDAO extends Closeable {
 
     @SqlQuery("""
         SELECT
@@ -76,4 +79,8 @@ public interface BikeDAO {
         WHERE BIKE.BIKE_ID = :id
         """)
     Bike getById(@Bind("id") Integer id)
+
+    @Override
+    void close()
+
 }

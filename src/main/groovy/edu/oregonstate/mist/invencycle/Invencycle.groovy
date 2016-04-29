@@ -37,6 +37,8 @@ class Invencycle extends Application<InvencycleConfiguration> {
     @Override
     public void run(InvencycleConfiguration configuration, Environment environment) {
 
+        Resource.loadProperties('resource.properties')
+
         final DBIFactory factory = new DBIFactory()
 
         final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "jdbi")

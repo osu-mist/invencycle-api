@@ -8,8 +8,6 @@ import javax.validation.constraints.NotNull
 
 public class InvencycleConfiguration extends Configuration {
 
-    //DataSourceFactory database = new DataSourceFactory()
-
     @Valid
     @NotNull
     @JsonProperty("database")
