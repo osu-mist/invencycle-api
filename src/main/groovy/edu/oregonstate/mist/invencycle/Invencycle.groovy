@@ -1,10 +1,6 @@
 package edu.oregonstate.mist.invencycle
 
-import edu.oregonstate.mist.api.Configuration
 import edu.oregonstate.mist.api.Resource
-import edu.oregonstate.mist.api.InfoResource
-import edu.oregonstate.mist.api.AuthenticatedUser
-import edu.oregonstate.mist.api.BasicAuthenticator
 import edu.oregonstate.mist.invencycle.db.BikeDAO
 import edu.oregonstate.mist.invencycle.resources.BikeResource
 import io.dropwizard.Application
@@ -12,9 +8,6 @@ import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
 import org.skife.jdbi.v2.DBI
 import io.dropwizard.jdbi.DBIFactory
-import io.dropwizard.auth.AuthFactory
-import io.dropwizard.auth.basic.BasicAuthFactory
-
 
 /**
  * Main application class.
