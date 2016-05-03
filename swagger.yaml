@@ -197,6 +197,8 @@ definitions:
         
   Attributes:
     properties:
+      id:
+        type: integer
       make:
         type: string
       model:
@@ -205,18 +207,24 @@ definitions:
         type: integer
       type: 
         type: string
-      frame_size:
+      frame_size_name:
         type: string
+      frame_size_cm:
+        type: integer
       msrp:
         type: integer
-      front_derailuer_make:
+      derailuer_make_front:
         type: string
-      front_derailuer_model:
+      derailuer_model_front:
         type: string
-      rear_derailuer_make:
+      derailuer_speeds_front:
+        type: integer
+      derailuer_make_rear:
         type: string
-      rear_derailuer_model:
+      derailuer_model_rear:
         type: string
+      derailuer_speeds_rear:
+        type: integer
       fork_make:
         type: string
       fork_model:
@@ -229,34 +237,38 @@ definitions:
         type: string
       shock_travel:
         type: integer
-      front_wheel_make:
+      rim_make_front:
         type: string
-      front_wheel_model:
+      rim_model_front:
         type: string
-      front_hub_make:
+      wheel_size_front:
+        type: integer
+      hub_make_front:
         type: string
-      front_hub_model:
+      hub_model_front:
         type: string
-      rear_wheel_make:
+      rim_make_rear:
         type: string
-      rear_wheel_model:
+      rim_model_rear:
         type: string
-      rear_hub_make:
+      wheel_size_rear:
+        type: integer
+      hub_make_rear:
         type: string
-      rear_hub_model:
+      hub_model_rear:
         type: string
-      front_brake_make:
+      brake_make_front:
         type: string
-      front_brake_model:
+      brake_model_front:
         type: string
-      front_rotor_size:
+      brake_rotor_size_front:
+        type: integer
+      brake_make_rear:
         type: string
-      rear_brake_make:
+      brake_model_rear:
         type: string
-      rear_brake_model:
-        type: string
-      rear_rotor_size:
-        type: string
+      brake_rotor_size_rear:
+        type: integer
 
   Links:
       properties:
