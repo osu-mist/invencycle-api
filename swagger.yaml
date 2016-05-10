@@ -44,7 +44,7 @@ paths:
         "200":
           description: "Successful response"
           schema:
-            $ref: "#/definitions/ResultObjects"
+            $ref: "#/definitions/Bike"
         "404":
           description: "Not Found"
           schema:
@@ -65,7 +65,7 @@ paths:
           description: "Bike data that will be added to the database."
           required: true
           schema:
-            $ref: "#/definitions/Bikes"
+            $ref: "#/definitions/Bike"
       responses:
         "200":
           description: Successful response
@@ -98,7 +98,7 @@ paths:
         "200":
           description: "Successful response"
           schema:
-            $ref: "#/definitions/ResultObject"
+            $ref: "#/definitions/Bike"
         "404":
           description: "Resource not found"
           schema:
@@ -125,7 +125,7 @@ paths:
           description: "Bike data that should be updated."
           required: true
           schema:
-            $ref: "#/definitions/Bikes"
+            $ref: "#/definitions/Bike"
       responses:
         "200":
           description: Successful response
@@ -165,35 +165,10 @@ paths:
           description: Internal server error
           
 definitions:
-  Bikes:
+  Bike:
     properties:
       attributes:
           $ref: "#/definitions/Attributes" 
-        
-  ResultObject:
-    properties:
-      links:
-        $ref: "#/definitions/Links"
-      data:
-        $ref: "#/definitions/ResourceObject"
-
-  ResultObjects:
-    properties:
-      links:
-        $ref: "#/definitions/Links"
-      data:
-        type: array
-        items:
-          $ref: "#/definitions/ResourceObject"
-        
-  ResourceObject:
-    properties:
-      id:
-        type: string
-      type:
-        type: string
-      attributes:
-        $ref: "#/definitions/Attributes"
         
   Attributes:
     properties:
@@ -270,18 +245,6 @@ definitions:
       brake_rotor_size_rear:
         type: integer
 
-  Links:
-      properties:
-        self:
-          type: string
-        first:
-          type: string
-        last:
-          type: string
-        prev:
-          type: string
-        next:
-          type: string
   Error:
     type: object
     properties:
