@@ -93,7 +93,7 @@ paths:
           in: path
           description: "Bike ID to be searched by"
           required: true
-          type: string
+          type: integer
       responses:
         "200":
           description: "Successful response"
@@ -115,6 +115,12 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: bikeID
+          in: path
+          description: "Bike ID to be searched by"
+          required: true
+          type: integer
+
         - name: body
           in: body
           description: "Bike data that should be updated."
@@ -146,7 +152,7 @@ paths:
           in: path
           description: "Bike ID to be searched by"
           required: true
-          type: string
+          type: integer
       responses:
         "200":
           description: Successful response
