@@ -44,7 +44,7 @@ paths:
         "200":
           description: "Successful response"
           schema:
-            $ref: "#/definitions/Bike"
+            $ref: "#/definitions/Attributes"
         "404":
           description: "Not Found"
           schema:
@@ -65,7 +65,7 @@ paths:
           description: "Bike data that will be added to the database."
           required: true
           schema:
-            $ref: "#/definitions/Bike"
+            $ref: "#/definitions/Attributes"
       responses:
         "200":
           description: Successful response
@@ -98,7 +98,7 @@ paths:
         "200":
           description: "Successful response"
           schema:
-            $ref: "#/definitions/Bike"
+            $ref: "#/definitions/Attributes"
         "404":
           description: "Resource not found"
           schema:
@@ -115,17 +115,12 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: bikeID
-          in: path
-          description: "Bike ID to be searched by"
-          required: true
-          type: string
         - name: body
           in: body
           description: "Bike data that should be updated."
           required: true
           schema:
-            $ref: "#/definitions/Bike"
+            $ref: "#/definitions/Attributes"
       responses:
         "200":
           description: Successful response
@@ -165,11 +160,7 @@ paths:
           description: Internal server error
           
 definitions:
-  Bike:
-    properties:
-      attributes:
-          $ref: "#/definitions/Attributes" 
-        
+  
   Attributes:
     properties:
       id:
