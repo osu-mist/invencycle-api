@@ -53,9 +53,9 @@ class BikeResource extends Resource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Bike> getAll    (@QueryParam("make") Optional<String> make,
-                                 @QueryParam("model") Optional<String> model,
-                                 @QueryParam("type") Optional<String> type) {
+    public List<Bike> getAll (@QueryParam("make") Optional<String> make,
+                              @QueryParam("model") Optional<String> model,
+                              @QueryParam("type") Optional<String> type) {
 
         List<Bike> bikeList = bikeDAO.getBikeByQuery(make.or(""), model.or(""), type.or(""))
 
