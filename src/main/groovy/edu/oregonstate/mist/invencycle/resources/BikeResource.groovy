@@ -51,6 +51,9 @@ class BikeResource extends Resource {
         returnResponse
     }
 
+    /**
+     * Get by query
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Bike> getAll (@QueryParam("make") Optional<String> make,
