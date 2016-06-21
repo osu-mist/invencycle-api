@@ -57,9 +57,7 @@ class BikeResource extends Resource {
                               @QueryParam("model") Optional<String> model,
                               @QueryParam("type") Optional<String> type) {
 
-        List<Bike> bikeList = bikeDAO.getBikeByQuery(make.or(""), model.or(""), type.or(""))
-
-        bikeList
+        bikeDAO.getBikeByQuery(make.or(""), model.or(""), type.or(""))
     }
 
 }
