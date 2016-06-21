@@ -33,11 +33,6 @@ paths:
           description: "Search through bikes by type of bike"
           required: false
           type: string
-        - in: query
-          name: suspension
-          description: "Search through bikes by suspension setup (none, hardtail, or full)"
-          required: false
-          type: string
         # Expected responses for this operation:
       responses:
         # Response code
