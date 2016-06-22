@@ -10,6 +10,10 @@ API for bikes, their components, and specifications.
 
 ## GET /
 
+### /bikes
+
+Searches bikes by query for make, model, or type.
+
 ### /bikes/{id}
 
 Returns a specific bike specificed by its ID in the request.
