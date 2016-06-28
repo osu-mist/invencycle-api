@@ -2,6 +2,7 @@ package edu.oregonstate.mist.invencycle
 
 import edu.oregonstate.mist.api.Resource
 import edu.oregonstate.mist.invencycle.db.BikeDAO
+import edu.oregonstate.mist.invencycle.health.InvencycleHealthCheck
 import edu.oregonstate.mist.invencycle.resources.BikeResource
 import io.dropwizard.Application
 import io.dropwizard.setup.Bootstrap
@@ -39,6 +40,8 @@ class Invencycle extends Application<InvencycleConfiguration> {
         final BikeDAO bikeDAO = jdbi.onDemand(BikeDAO.class)
 
         environment.jersey().register(new BikeResource(bikeDAO))
+
+        environment.healthChecks().register("bike", new InvencycleHealthCheck(bikeDAO))
     }
 
     /**
