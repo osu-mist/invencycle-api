@@ -9,6 +9,9 @@ import org.skife.jdbi.v2.sqlobject.Bind
 @RegisterMapper(BikeMapper)
 public interface BikeDAO extends Closeable {
 
+    /**
+     * Get by query
+     */
     @SqlQuery("""
           SELECT
               BIKE.BIKE_ID,
@@ -82,7 +85,9 @@ public interface BikeDAO extends Closeable {
                               @Bind("model") String model,
                               @Bind("type") String type
                              )
-
+    /**
+     * Get by ID
+     */
     @SqlQuery("""
         SELECT
           BIKE.BIKE_ID,
