@@ -72,7 +72,7 @@ class BikeResource extends Resource {
     @Path('{id: \\d+}')
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteById (@PathParam('id') Integer id) {
-        BikeDAO.deleteById(id)
-        Reponse.ok().build()
+        bikeDAO.deleteById(id)
+        Response.ok().build()
     }
 }
