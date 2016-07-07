@@ -5,6 +5,8 @@ import edu.oregonstate.mist.invencycle.db.BikeDAO
 import edu.oregonstate.mist.api.Resource
 import io.dropwizard.jersey.params.IntParam
 import com.google.common.base.Optional
+
+import javax.ws.rs.DELETE
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
@@ -63,4 +65,14 @@ class BikeResource extends Resource {
         bikeDAO.getBikeByQuery(make.or(""), model.or(""), type.or(""))
     }
 
+    /**
+     * Delete by ID
+     */
+    @DELETE
+    @Path('{id: \\d+}')
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteById (@PathParam('id') Integer id) {
+        bikeDAO.deleteById(id)
+        Response.ok().build()
+    }
 }

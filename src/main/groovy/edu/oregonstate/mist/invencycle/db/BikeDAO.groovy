@@ -2,12 +2,22 @@ package edu.oregonstate.mist.invencycle.db
 
 import edu.oregonstate.mist.invencycle.core.Bike
 import edu.oregonstate.mist.invencycle.mapper.BikeMapper
+import org.skife.jdbi.v2.sqlobject.SqlUpdate
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
 import org.skife.jdbi.v2.sqlobject.SqlQuery
 import org.skife.jdbi.v2.sqlobject.Bind
 
 @RegisterMapper(BikeMapper)
 public interface BikeDAO extends Closeable {
+
+    /**
+     * Delete by ID
+     */
+    @SqlUpdate("""
+        DELETE FROM BIKE
+        WHERE BIKE.BIKE_ID = :id
+        """)
+    void deleteById(@Bind("id") Integer id)
 
     /**
      * Get by query
@@ -83,8 +93,7 @@ public interface BikeDAO extends Closeable {
 
     List<Bike> getBikeByQuery(@Bind("make") String make,
                               @Bind("model") String model,
-                              @Bind("type") String type
-                             )
+                              @Bind("type") String type)
     /**
      * Get by ID
      */
