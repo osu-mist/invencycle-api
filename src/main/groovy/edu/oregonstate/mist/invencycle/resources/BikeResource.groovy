@@ -115,6 +115,7 @@ class BikeResource extends Resource {
         //} catch (Exception e) {
          //   returnResponse = internalServerError("Internal server error").build()
        // }
+        returnResponse
     }
 
     /**
