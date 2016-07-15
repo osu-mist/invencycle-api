@@ -76,10 +76,11 @@ class BikeResource extends Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response postBike (@Valid Bike newBike) {
         Response returnResponse
-        //try {
+        try {
             bikeDAO.postBrakeFront(newBike.brake_make_front,
                                    newBike.brake_model_front,
                                    newBike.brake_rotor_size_front)
+
             bikeDAO.postBrakeRear(newBike.brake_make_rear,
                                   newBike.brake_model_rear,
                                   newBike.brake_rotor_size_rear)
@@ -89,8 +90,8 @@ class BikeResource extends Resource {
             bikeDAO.postDerailuerRear(newBike.derailuer_make_rear,
                                       newBike.derailuer_model_rear,
                                       newBike.derailuer_speeds_rear)
-            bikeDAO.postFrameSize(newBike.frame_size_cm,
-                                  newBike.frame_size_name)
+            bikeDAO.postFrameSize(newBike.frame_size_name,
+                                  newBike.frame_size_cm)
             bikeDAO.postFork(newBike.fork_make,
                              newBike.fork_model,
                              newBike.fork_travel)
@@ -112,9 +113,11 @@ class BikeResource extends Resource {
                              newBike.msrp,
                              newBike.year,
                              newBike.type)
-        //} catch (Exception e) {
-         //   returnResponse = internalServerError("Internal server error").build()
-       // }
+
+            returnResponse = Response.ok("Bike successfully created").build()
+        } catch (Exception e) {
+            returnResponse = internalServerError("Internal server error").build()
+        }
         returnResponse
     }
 
