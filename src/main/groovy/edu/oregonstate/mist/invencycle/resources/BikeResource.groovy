@@ -130,7 +130,7 @@ class BikeResource extends Resource {
             } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_MSRP\")")) {
                 returnResponse = badRequest("bike_msrp cannot be NULL").build()
             } else {
-                logger.error("Exception while creating a new bike", e)
+                logger.error("Exception while calling postBike", e)
                 returnResponse = internalServerError("Internal server error").build()
             }
         }
