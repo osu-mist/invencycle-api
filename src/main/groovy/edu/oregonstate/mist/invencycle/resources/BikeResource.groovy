@@ -5,6 +5,7 @@ import edu.oregonstate.mist.invencycle.db.BikeDAO
 import edu.oregonstate.mist.api.Resource
 import io.dropwizard.jersey.params.IntParam
 import com.google.common.base.Optional
+import org.slf4j.LoggerFactory
 
 import javax.ws.rs.DELETE
 import javax.ws.rs.GET
@@ -17,6 +18,8 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.QueryParam
 import javax.validation.Valid
 import javax.ws.rs.Consumes
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  *Bike resource class
@@ -25,6 +28,7 @@ import javax.ws.rs.Consumes
 @Path('/bikes/')
 @Produces(MediaType.APPLICATION_JSON)
 class BikeResource extends Resource {
+    Logger logger = LoggerFactory.getLogger(BikeResource.class)
 
     private final BikeDAO bikeDAO
 
@@ -41,18 +45,13 @@ class BikeResource extends Resource {
     public Response getByID(@PathParam('id') IntParam id) {
 
         Response returnResponse
-
         Bike bikes = bikeDAO.getById(id.get())
 
         if (bikes == null) {
-
             returnResponse = notFound().build()
-
         } else {
-
             returnResponse = ok(bikes).build()
         }
-
         returnResponse
     }
 
@@ -76,6 +75,7 @@ class BikeResource extends Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response postBike (@Valid Bike newBike) {
         Response returnResponse
+
         try {
             bikeDAO.postBrakeFront(newBike.brake_make_front,
                                    newBike.brake_model_front,
@@ -116,7 +116,23 @@ class BikeResource extends Resource {
 
             returnResponse = Response.ok("Bike successfully created").build()
         } catch (Exception e) {
-            returnResponse = internalServerError("Internal server error").build()
+            String dbError = e.cause.toString()
+
+            if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_BIKE_TYPE_ID\")")) {
+                returnResponse = badRequest("bike_type must be Mountain Trail, Mountain XC, " +
+                        "Mountain Enduro, Road, Road Gravel, or Cyclocross").build()
+            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_MAKE\")")) {
+                returnResponse = badRequest("bike_make cannot be NULL").build()
+            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_MODEL\")")) {
+                returnResponse = badRequest("bike_model cannot be NULL").build()
+            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_YEAR\")")) {
+                returnResponse = badRequest("bike_year cannot be NULL").build()
+            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_MSRP\")")) {
+                returnResponse = badRequest("bike_msrp cannot be NULL").build()
+            } else {
+                logger.error("Exception while creating a new bike", e)
+                returnResponse = internalServerError("Internal server error").build()
+            }
         }
         returnResponse
     }
