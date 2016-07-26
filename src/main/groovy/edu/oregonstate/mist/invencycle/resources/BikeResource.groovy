@@ -77,43 +77,7 @@ class BikeResource extends Resource {
         Response returnResponse
 
         try {
-            bikeDAO.postBrakeFront(newBike.brake_make_front,
-                                   newBike.brake_model_front,
-                                   newBike.brake_rotor_size_front)
-
-            bikeDAO.postBrakeRear(newBike.brake_make_rear,
-                                  newBike.brake_model_rear,
-                                  newBike.brake_rotor_size_rear)
-            bikeDAO.postDerailuerFront(newBike.derailuer_make_front,
-                                       newBike.derailuer_model_front,
-                                       newBike.derailuer_speeds_front)
-            bikeDAO.postDerailuerRear(newBike.derailuer_make_rear,
-                                      newBike.derailuer_model_rear,
-                                      newBike.derailuer_speeds_rear)
-            bikeDAO.postFrameSize(newBike.frame_size_name,
-                                  newBike.frame_size_cm)
-            bikeDAO.postFork(newBike.fork_make,
-                             newBike.fork_model,
-                             newBike.fork_travel)
-            bikeDAO.postShock(newBike.shock_make,
-                              newBike.shock_model,
-                              newBike.shock_travel)
-            bikeDAO.postWheelFront(newBike.wheel_size_front,
-                                   newBike.rim_make_front,
-                                   newBike.rim_model_front,
-                                   newBike.hub_make_front,
-                                   newBike.hub_model_front)
-            bikeDAO.postWheelRear(newBike.wheel_size_rear,
-                                  newBike.rim_make_rear,
-                                  newBike.rim_model_rear,
-                                  newBike.hub_make_rear,
-                                  newBike.hub_model_rear)
-            bikeDAO.postBike(newBike.make,
-                             newBike.model,
-                             newBike.msrp,
-                             newBike.year,
-                             newBike.type)
-
+            addBike(newBike)
             returnResponse = Response.ok("Bike successfully created").build()
         } catch (Exception e) {
             String dbError = e.cause.toString()
@@ -146,5 +110,43 @@ class BikeResource extends Resource {
     public Response deleteById (@PathParam('id') Integer id) {
         bikeDAO.deleteById(id)
         Response.ok().build()
+    }
+
+    public def addBike(Bike newBike) {
+        bikeDAO.postBrakeFront(newBike.brake_make_front,
+                newBike.brake_model_front,
+                newBike.brake_rotor_size_front)
+        bikeDAO.postBrakeRear(newBike.brake_make_rear,
+                newBike.brake_model_rear,
+                newBike.brake_rotor_size_rear)
+        bikeDAO.postDerailuerFront(newBike.derailuer_make_front,
+                newBike.derailuer_model_front,
+                newBike.derailuer_speeds_front)
+        bikeDAO.postDerailuerRear(newBike.derailuer_make_rear,
+                newBike.derailuer_model_rear,
+                newBike.derailuer_speeds_rear)
+        bikeDAO.postFrameSize(newBike.frame_size_name,
+                newBike.frame_size_cm)
+        bikeDAO.postFork(newBike.fork_make,
+                newBike.fork_model,
+                newBike.fork_travel)
+        bikeDAO.postShock(newBike.shock_make,
+                newBike.shock_model,
+                newBike.shock_travel)
+        bikeDAO.postWheelFront(newBike.wheel_size_front,
+                newBike.rim_make_front,
+                newBike.rim_model_front,
+                newBike.hub_make_front,
+                newBike.hub_model_front)
+        bikeDAO.postWheelRear(newBike.wheel_size_rear,
+                newBike.rim_make_rear,
+                newBike.rim_model_rear,
+                newBike.hub_make_rear,
+                newBike.hub_model_rear)
+        bikeDAO.postBike(newBike.make,
+                newBike.model,
+                newBike.msrp,
+                newBike.year,
+                newBike.type)
     }
 }
