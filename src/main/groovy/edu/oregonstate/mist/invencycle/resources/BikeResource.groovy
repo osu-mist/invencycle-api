@@ -80,8 +80,7 @@ class BikeResource extends Resource {
             addBike(newBike)
             returnResponse = Response.ok("Bike successfully created").build()
         } catch (Exception e) {
-            String dbError = e.cause.toString()
-            String validationErrorMsg = getDataError(dbError)
+            String validationErrorMsg = getDataError(e.cause.toString())
 
             if (!(validationErrorMsg.isEmpty())) {
                 returnResponse = badRequest(validationErrorMsg).build()
