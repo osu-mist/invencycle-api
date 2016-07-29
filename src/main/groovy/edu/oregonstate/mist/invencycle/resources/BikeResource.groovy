@@ -83,9 +83,6 @@ class BikeResource extends Resource {
             String dbError = e.cause.toString()
             String validationErrorMsg = getDataError(dbError)
 
-            println("Validation error message")
-            println validationErrorMsg
-
             if (!(validationErrorMsg.isEmpty())) {
                 returnResponse = badRequest(validationErrorMsg).build()
             } else {
