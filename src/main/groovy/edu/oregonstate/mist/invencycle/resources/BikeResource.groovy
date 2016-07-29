@@ -81,18 +81,13 @@ class BikeResource extends Resource {
             returnResponse = Response.ok("Bike successfully created").build()
         } catch (Exception e) {
             String dbError = e.cause.toString()
+            String validationErrorMsg = getDataError(dbError)
 
-            if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_BIKE_TYPE_ID\")")) {
-                returnResponse = badRequest("bike_type must be Mountain Trail, Mountain XC, " +
-                        "Mountain Enduro, Road, Road Gravel, or Cyclocross").build()
-            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_MAKE\")")) {
-                returnResponse = badRequest("bike_make cannot be NULL").build()
-            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_MODEL\")")) {
-                returnResponse = badRequest("bike_model cannot be NULL").build()
-            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_YEAR\")")) {
-                returnResponse = badRequest("bike_year cannot be NULL").build()
-            } else if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_MSRP\")")) {
-                returnResponse = badRequest("bike_msrp cannot be NULL").build()
+            println("Validation error message")
+            println validationErrorMsg
+
+            if (!(validationErrorMsg.isEmpty())) {
+                returnResponse = badRequest(validationErrorMsg).build()
             } else {
                 logger.error("Exception while calling postBike", e)
                 returnResponse = internalServerError("Internal server error").build()
@@ -111,7 +106,28 @@ class BikeResource extends Resource {
         bikeDAO.deleteById(id)
         Response.ok().build()
     }
+    /**
+     * Checks an error for certain characteristics and returns a message based on the error.
+     */
+    public def getDataError(dbError) {
+        def errorMessages = ["bike_make", "bike_model", "bike_year", "bike_msrp"]
+        def friendlyMessage
 
+        if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"BIKE_BIKE_TYPE_ID\")")) {
+           friendlyMessage = "bike_type must be Mountain Trail, Mountain XC, " +
+                    "Mountain Enduro, Road, Road Gravel, or Cyclocross"
+        } else {
+            errorMessages.each {
+                if (dbError.contains("cannot insert NULL into (\"MISTSTU3\".\"BIKE\".\"${it.toUpperCase()}\")")) {
+                    friendlyMessage = "${it} cannot be NULL"
+                }
+            }
+        }
+        friendlyMessage
+    }
+    /**
+     * Passes a Bike to DAO to add it to the database.
+     */
     public def addBike(Bike newBike) {
         bikeDAO.postBrakeFront(newBike.brake_make_front,
                 newBike.brake_model_front,
