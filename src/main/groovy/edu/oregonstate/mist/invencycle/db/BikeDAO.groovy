@@ -11,6 +11,179 @@ import org.skife.jdbi.v2.sqlobject.Bind
 public interface BikeDAO extends Closeable {
 
     /**
+     * POST a bike
+     */
+    @SqlUpdate("""
+              INSERT INTO BRAKE (BRAKE_ID, BRAKE_MAKE, BRAKE_MODEL, BRAKE_ROTOR_SIZE, BRAKE_POSITION)
+              VALUES (BIKE_BRAKE_ID_SEQ.nextval, :brake_make_front, :brake_model_front, :brake_rotor_size_front, 'Front')
+               """)
+    void postBrakeFront(@Bind("brake_make_front") String brakeMakeFront,
+                        @Bind("brake_model_front") String brakeModelFront,
+                        @Bind("brake_rotor_size_front") Integer brakeRotorSizeFront)
+
+    @SqlUpdate("""
+              INSERT INTO BRAKE (BRAKE_ID, BRAKE_MAKE, BRAKE_MODEL, BRAKE_ROTOR_SIZE, BRAKE_POSITION)
+              VALUES (BIKE_BRAKE_ID_SEQ.nextval, :brake_make_rear, :brake_model_rear, :brake_rotor_size_rear, 'Rear')
+               """)
+    void postBrakeRear(@Bind("brake_make_rear") String brakeMakeRear,
+                       @Bind("brake_model_rear") String brakeModelYear,
+                       @Bind("brake_rotor_size_rear") Integer brakeRotorSizeRear)
+
+    @SqlUpdate("""
+              INSERT INTO DERAILUER (DERAILUER_ID, DERAILUER_MAKE, DERAILUER_MODEL, DERAILUER_SPEEDS, DERAILUER_POSITION)
+              VALUES (BIKE_DERAILUER_ID_SEQ.nextval, :derailuer_make_front, :derailuer_model_front, :derailuer_speeds_front, 'Front')
+              """)
+    void postDerailuerFront(@Bind("derailuer_make_front") String derailuerMakeFront,
+                            @Bind("derailuer_model_front") String derailuerModelFront,
+                            @Bind("derailuer_speeds_front") Integer derailuerSpeedsFront)
+
+    @SqlUpdate("""
+              INSERT INTO DERAILUER (DERAILUER_ID, DERAILUER_MAKE, DERAILUER_MODEL, DERAILUER_SPEEDS, DERAILUER_POSITION)
+              VALUES (BIKE_DERAILUER_ID_SEQ.nextval, :derailuer_make_rear, :derailuer_model_rear, :derailuer_speeds_rear, 'Rear')
+              """)
+    void postDerailuerRear(@Bind("derailuer_make_rear") String derailuerMakeRear,
+                           @Bind("derailuer_model_rear") String derailuerModelRear,
+                           @Bind("derailuer_speeds_rear") Integer derailuerSpeedsRear)
+    
+    @SqlUpdate("""
+              INSERT INTO FRAME_SIZE (FRAME_SIZE_ID, FRAME_SIZE_NAME, FRAME_SIZE_CM)
+              VALUES (BIKE_FRAME_SIZE_SEQ.nextval, :frame_size_name, :frame_size_cm)
+               """)
+    void postFrameSize(@Bind("frame_size_name") String frameSizeName,
+                       @Bind("frame_size_cm") Integer frameSizeCm)
+    
+    @SqlUpdate("""
+              INSERT INTO SUSPENSION (SUSPENSION_ID, SUSPENSION_MAKE, SUSPENSION_MODEL, SUSPENSION_TRAVEL, SUSPENSION_TYPE)
+              VALUES (BIKE_SUSPENSION_ID_SEQ.nextval, :fork_make, :fork_model, :fork_travel, 'Fork')
+               """)
+    void postFork(@Bind("fork_make") String forkMake,
+                  @Bind("fork_model") String forkModel,
+                  @Bind("fork_travel") Integer forkTravel)
+
+    @SqlUpdate("""
+              INSERT INTO SUSPENSION (SUSPENSION_ID, SUSPENSION_MAKE, SUSPENSION_MODEL, SUSPENSION_TRAVEL, SUSPENSION_TYPE)
+              VALUES (BIKE_SUSPENSION_ID_SEQ.nextval, :shock_make, :shock_model, :shock_travel, 'Shock')
+               """)
+    void postShock(@Bind("shock_make") String shockMake,
+                   @Bind("shock_model") String shockModel,
+                   @Bind("shock_travel") Integer shockTravel)
+    
+    @SqlUpdate("""
+               INSERT INTO WHEEL (WHEEL_ID, WHEEL_SIZE, WHEEL_RIM_MAKE, WHEEL_RIM_MODEL, WHEEL_HUB_MAKE, WHEEL_HUB_MODEL, WHEEL_POSITION)
+               VALUES (BIKE_WHEEL_ID_SEQ.nextval, :wheel_size_front, :rim_make_front, :rim_model_front, :hub_make_front, :hub_model_front, 'Front')
+              """)
+    void postWheelFront(@Bind("wheel_size_front") Integer wheelSizeFront,
+                        @Bind("rim_make_front") String rimMakeFront,
+                        @Bind("rim_model_front") String rimModelFront,
+                        @Bind("hub_make_front") String hubMakeFront,
+                        @Bind("hub_model_front") String hubModelFront)
+
+    @SqlUpdate("""
+               INSERT INTO WHEEL (WHEEL_ID, WHEEL_SIZE, WHEEL_RIM_MAKE, WHEEL_RIM_MODEL, WHEEL_HUB_MAKE, WHEEL_HUB_MODEL, WHEEL_POSITION)
+               VALUES (BIKE_WHEEL_ID_SEQ.nextval, :wheel_size_rear, :rim_make_rear, :rim_model_rear, :hub_make_rear, :hub_model_rear, 'Rear')
+              """)
+    void postWheelRear(@Bind("wheel_size_rear") Integer wheelSizeRear,
+                       @Bind("rim_make_rear") String rimMakeRear,
+                       @Bind("rim_model_rear") String rimModelRear,
+                       @Bind("hub_make_rear") String hubMakeRear,
+                       @Bind("hub_model_rear") String hubModelRear)
+
+    @SqlUpdate("""
+              INSERT INTO BIKE (BIKE_ID, BIKE_MAKE, BIKE_MODEL, BIKE_YEAR, BIKE_BIKE_TYPE_ID, BIKE_FRAME_SIZE_ID, BIKE_MSRP,
+                BIKE_DERAILUER_FRONT_ID, BIKE_DERAILUER_REAR_ID, BIKE_FORK_ID, BIKE_SHOCK_ID, BIKE_WHEEL_FRONT_ID,
+                BIKE_WHEEL_REAR_ID, BIKE_BRAKE_FRONT_ID, BIKE_BRAKE_REAR_ID, BIKE_CREATE_DATE)
+              VALUES (BIKE_ID_SEQ.nextval, :bike_make, :bike_model, :bike_year,
+
+                (SELECT BIKE_TYPE_ID FROM BIKE_TYPE
+                WHERE BIKE_TYPE_NAME LIKE :bike_type),
+
+                (SELECT MAX(FRAME_SIZE_ID) FROM FRAME_SIZE WHERE (FRAME_SIZE_NAME LIKE :frame_size_name) OR (FRAME_SIZE_CM LIKE :frame_size_cm)),
+
+              :bike_msrp,
+
+                (SELECT MAX(DERAILUER_ID) FROM DERAILUER WHERE (DERAILUER_MAKE LIKE :derailuer_make_front)
+                    AND (DERAILUER_MODEL LIKE :derailuer_model_front)
+                    AND (DERAILUER_SPEEDS LIKE :derailuer_speeds_front)
+                    AND (DERAILUER_POSITION LIKE 'Front')),
+
+                (SELECT MAX(DERAILUER_ID) FROM DERAILUER WHERE (DERAILUER_MAKE LIKE :derailuer_make_rear)
+                    AND (DERAILUER_MODEL LIKE :derailuer_model_rear)
+                    AND (DERAILUER_SPEEDS LIKE :derailuer_speeds_rear)
+                    AND (DERAILUER_POSITION LIKE 'Rear')),
+
+                (SELECT MAX(SUSPENSION_ID) FROM SUSPENSION WHERE (SUSPENSION_MAKE LIKE :fork_make)
+                    AND (SUSPENSION_MODEL LIKE :fork_model)
+                    AND (SUSPENSION_TRAVEL LIKE :fork_travel)
+                    AND (SUSPENSION_TYPE LIKE 'Fork')),
+
+                (SELECT MAX(SUSPENSION_ID) FROM SUSPENSION WHERE (SUSPENSION_MAKE LIKE :shock_make)
+                    AND (SUSPENSION_MODEL LIKE :shock_model)
+                    AND (SUSPENSION_TRAVEL LIKE :shock_travel)
+                    AND (SUSPENSION_TYPE LIKE 'Shock')),
+
+                (SELECT MAX(WHEEL_ID) FROM WHEEL WHERE (WHEEL_SIZE LIKE :wheel_size_front)
+                    AND (WHEEL_RIM_MAKE LIKE :rim_make_front)
+                    AND (WHEEL_RIM_MODEL LIKE :rim_model_front)
+                    AND (WHEEL_HUB_MAKE LIKE :hub_make_front)
+                    AND (WHEEL_HUB_MODEL LIKE :hub_model_front)
+                    AND (WHEEL_POSITION LIKE 'Front')),
+
+                (SELECT MAX(WHEEL_ID) FROM WHEEL WHERE (WHEEL_SIZE LIKE :wheel_size_rear)
+                    AND (WHEEL_RIM_MAKE LIKE :rim_make_rear)
+                    AND (WHEEL_RIM_MODEL LIKE :rim_model_rear)
+                    AND (WHEEL_HUB_MAKE LIKE :hub_make_rear)
+                    AND (WHEEL_HUB_MODEL LIKE :hub_model_rear)
+                    AND (WHEEL_POSITION LIKE 'Rear')),
+
+                (SELECT MAX(BRAKE_ID) FROM BRAKE WHERE (BRAKE_MAKE LIKE :brake_make_front)
+                    AND (BRAKE_MODEL LIKE :brake_model_front)
+                    AND (BRAKE_ROTOR_SIZE LIKE :brake_rotor_size_front)
+                    AND (BRAKE_POSITION LIKE 'Front')),
+
+                (SELECT MAX(BRAKE_ID) FROM BRAKE WHERE (BRAKE_MAKE LIKE :brake_make_rear)
+                    AND (BRAKE_MODEL LIKE :brake_model_rear)
+                    AND (BRAKE_ROTOR_SIZE LIKE :brake_rotor_size_rear)
+                    AND (BRAKE_POSITION LIKE 'Rear')),
+
+              SYSDATE)
+              """)
+    void postBike(@Bind("bike_make") String make,
+                  @Bind("bike_model") String model,
+                  @Bind("bike_msrp") Integer msrp,
+                  @Bind("bike_year") Integer year,
+                  @Bind("bike_type") String type,
+                  @Bind("frame_size_name") String frameSizeName,
+                  @Bind("frame_size_cm") Integer frameSizeCm,
+                  @Bind("derailuer_make_front") String derailuerMakeFront,
+                  @Bind("derailuer_model_front") String derailuerModelFront,
+                  @Bind("derailuer_speeds_front") Integer derailuerSpeedsFront,
+                  @Bind("derailuer_make_rear") String derailuerMakeRear,
+                  @Bind("derailuer_model_rear") String derailuerModelRear,
+                  @Bind("derailuer_speeds_rear") Integer derailuerSpeedsRear,
+                  @Bind("fork_make") String forkMake,
+                  @Bind("fork_model") String forkModel,
+                  @Bind("fork_travel") Integer forkTravel,
+                  @Bind("shock_make") String shockMake,
+                  @Bind("shock_model") String shockModel,
+                  @Bind("shock_travel") Integer shockTravel,
+                  @Bind("wheel_size_front") Integer wheelSizeFront,
+                  @Bind("rim_make_front") String rimMakeFront,
+                  @Bind("rim_model_front") String rimModelFront,
+                  @Bind("hub_make_front") String hubMakeFront,
+                  @Bind("hub_model_front") String hubModelFront,
+                  @Bind("wheel_size_rear") Integer wheelSizeRear,
+                  @Bind("rim_make_rear") String rimMakeRear,
+                  @Bind("rim_model_rear") String rimModelRear,
+                  @Bind("hub_make_rear") String hubMakeRear,
+                  @Bind("hub_model_rear") String hubModelRear,
+                  @Bind("brake_make_front") String brakeMakeFront,
+                  @Bind("brake_model_front") String brakeModelFront,
+                  @Bind("brake_rotor_size_front") Integer brakeRotorSizeFront,
+                  @Bind("brake_make_rear") String brakeMakeRear,
+                  @Bind("brake_model_rear") String brakeModelYear,
+                  @Bind("brake_rotor_size_rear") Integer brakeRotorSizeRear)
+
+    /**
      * Delete by ID
      */
     @SqlUpdate("""

@@ -18,6 +18,12 @@ Searches bikes by query for make, model, or type.
 
 Returns a specific bike specificed by its ID in the request.
 
+## POST /
+
+### /bikes
+
+Creates a new bike record with the components/specifications given by the user in the request.
+
 ## DELETE /
 
 ### /bikes/{id}
