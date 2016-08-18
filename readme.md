@@ -24,6 +24,12 @@ Returns a specific bike specificed by its ID in the request.
 
 Creates a new bike record with the components/specifications given by the user in the request.
 
+## PUT /
+
+### /bikes/{id}
+
+Updates the bike specified by the ID. Only updates the bike where attributes are not null. To unchange an attribute of a bike, send a null value for that attribute. Non-null values will update the bike.
+
 ## DELETE /
 
 ### /bikes/{id}

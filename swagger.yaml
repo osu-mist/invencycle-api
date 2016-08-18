@@ -106,13 +106,13 @@ paths:
     put:
       tags:
         - bikes
-      description: "Change bike or component information, add components, or delete individual components from a bike"
+      description: "Change bike or component information or add components"
       produces:
         - application/json
       parameters:
         - name: bikeID
           in: path
-          description: "Bike ID to be searched by"
+          description: "Bike ID to be updated"
           required: true
           type: integer
 
