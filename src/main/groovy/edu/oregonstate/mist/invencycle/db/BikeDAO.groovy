@@ -184,6 +184,137 @@ public interface BikeDAO extends Closeable {
                   @Bind("brake_rotor_size_rear") Integer brakeRotorSizeRear)
 
     /**
+     * PUT to update a bike
+     */
+    @SqlUpdate("""
+        UPDATE BIKE
+            SET BIKE_MAKE=:make, BIKE_MODEL=:model, BIKE_YEAR=:year, BIKE_MSRP=:msrp,
+            BIKE_BIKE_TYPE_ID=(
+                SELECT BIKE_TYPE_ID FROM BIKE_TYPE
+                WHERE BIKE_TYPE_NAME LIKE :bike_type)
+        WHERE BIKE_ID=:id
+        """)
+    void updateBike(@Bind("id") Integer id,
+                    @Bind("make") String make,
+                    @Bind("model") String model,
+                    @Bind("year") Integer year,
+                    @Bind("msrp") Integer msrp,
+                    @Bind("bike_type") String bike_type)
+    @SqlUpdate("""
+        UPDATE BRAKE
+            SET BRAKE_MAKE=:brake_make, BRAKE_MODEL=:brake_model, BRAKE_ROTOR_SIZE=:rotor_size
+            WHERE BRAKE_ID=(
+                SELECT BIKE_BRAKE_FRONT_ID
+                    FROM BIKE
+                    WHERE BIKE_ID = :id)
+        """)
+    void updateBrakeFront(@Bind("id") Integer id,
+                          @Bind("brake_make") String brakeMake,
+                          @Bind("brake_model") String brakeModel,
+                          @Bind("rotor_size") Integer rotorSize)
+    @SqlUpdate("""
+        UPDATE BRAKE
+            SET BRAKE_MAKE=:brake_make, BRAKE_MODEL=:brake_model, BRAKE_ROTOR_SIZE=:rotor_size
+            WHERE BRAKE_ID=(
+                SELECT BIKE_BRAKE_REAR_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateBrakeRear(@Bind("id") Integer id,
+                         @Bind("brake_make") String brakeMake,
+                         @Bind("brake_model") String brakeModel,
+                         @Bind("rotor_size") Integer rotorSize)
+    @SqlUpdate("""
+        UPDATE DERAILUER
+            SET DERAILUER_MAKE=:derailuer_make, DERAILUER_MODEL=:derailuer_model, DERAILUER_SPEEDS=:derailuer_speeds
+            WHERE DERAILUER_ID=(
+                SELECT BIKE_DERAILUER_FRONT_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateDerailuerFront(@Bind("id") Integer id,
+                              @Bind("derailuer_make") String derailuerMake,
+                              @Bind("derailuer_model") String derailuerModel,
+                              @Bind("derailuer_speeds") Integer derailuerSpeeds)
+    @SqlUpdate("""
+        UPDATE DERAILUER
+            SET DERAILUER_MAKE=:derailuer_make, DERAILUER_MODEL=:derailuer_model, DERAILUER_SPEEDS=:derailuer_speeds
+            WHERE DERAILUER_ID=(
+                SELECT BIKE_DERAILUER_REAR_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateDerailuerRear(@Bind("id") Integer id,
+                             @Bind("derailuer_make") String derailuerMake,
+                             @Bind("derailuer_model") String derailuerModel,
+                             @Bind("derailuer_speeds") Integer derailuerSpeeds)
+    @SqlUpdate("""
+        UPDATE SUSPENSION
+            SET SUSPENSION_MAKE=:fork_make, SUSPENSION_MODEL=:fork_model, SUSPENSION_TRAVEL=:fork_travel
+            WHERE SUSPENSION_ID=(
+                SELECT BIKE_FORK_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateFork(@Bind("id") Integer id,
+                    @Bind("fork_make") String forkMake,
+                    @Bind("fork_model") String forkModel,
+                    @Bind("fork_travel") Integer forkTravel)
+    @SqlUpdate("""
+        UPDATE SUSPENSION
+            SET SUSPENSION_MAKE=:shock_make, SUSPENSION_MODEL=:shock_model, SUSPENSION_TRAVEL=:shock_travel
+            WHERE SUSPENSION_ID=(
+                SELECT BIKE_SHOCK_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateShock(@Bind("id") Integer id,
+                     @Bind("shock_make") String shockMake,
+                     @Bind("shock_model") String shockModel,
+                     @Bind("shock_travel") Integer shockTravel)
+    @SqlUpdate("""
+        UPDATE WHEEL
+            SET WHEEL_SIZE=:wheel_size, WHEEL_RIM_MAKE=:rim_make, WHEEL_RIM_MODEL=:rim_model,
+                WHEEL_HUB_MAKE=:hub_make, WHEEL_HUB_MODEL=:hub_model
+            WHERE WHEEL_ID=(
+                SELECT BIKE_WHEEL_FRONT_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateWheelFront(@Bind("id") Integer id,
+                          @Bind("wheel_size") Integer wheelSize,
+                          @Bind("rim_make") String rimMake,
+                          @Bind("rim_model") String rimModel,
+                          @Bind("hub_make") String hubMake,
+                          @Bind("hub_model") String hubModel)
+    @SqlUpdate("""
+        UPDATE WHEEL
+            SET WHEEL_SIZE=:wheel_size, WHEEL_RIM_MAKE=:rim_make, WHEEL_RIM_MODEL=:rim_model,
+                WHEEL_HUB_MAKE=:hub_make, WHEEL_HUB_MODEL=:hub_model
+            WHERE WHEEL_ID=(
+                SELECT BIKE_WHEEL_REAR_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateWheelRear(@Bind("id") Integer id,
+                         @Bind("wheel_size") Integer wheelSize,
+                         @Bind("rim_make") String rimMake,
+                         @Bind("rim_model") String rimModel,
+                         @Bind("hub_make") String hubMake,
+                         @Bind("hub_model") String hubModel)
+    @SqlUpdate("""
+        UPDATE FRAME_SIZE
+            SET FRAME_SIZE_NAME=:frame_size_name, FRAME_SIZE_CM=:frame_size_cm
+            WHERE FRAME_SIZE_ID=(
+                SELECT BIKE_FRAME_SIZE_ID
+                    FROM BIKE
+                    WHERE BIKE_ID=:id)
+        """)
+    void updateFrameSize(@Bind("id") Integer id,
+                         @Bind("frame_size_name") String frameSizeName,
+                         @Bind("frame_size_cm") Integer frameSizeCm)
+
+    /**
      * Delete by ID
      */
     @SqlUpdate("""
@@ -336,6 +467,15 @@ public interface BikeDAO extends Closeable {
         WHERE BIKE.BIKE_ID = :id
         """)
     Bike getById(@Bind("id") Integer id)
+
+    /**
+     * Check if ID exists for PUT bike
+     */
+    @SqlQuery("""
+        SELECT BIKE_ID from BIKE
+            WHERE BIKE_ID = :id
+        """)
+    Integer idCheck(@Bind("id") Integer id)
 
     @Override
     void close()
