@@ -102,13 +102,11 @@ class BikeResource extends Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response putByID (@PathParam('id') Integer id, @Valid Bike userBike) {
         Response returnResponse
-        Integer idCheck = bikeDAO.idCheck(id)
-        Bike currentBike
+        Bike currentBike = bikeDAO.getById(id)
 
-        if (!idCheck) {
+        if (!currentBike) {
             returnResponse = badRequest("Bike ID does not exist. Use a POST request to create a new bike.").build()
         } else {
-            currentBike = bikeDAO.getById(id)
             copyProperties(userBike, currentBike)
             try {
                 updateBike(currentBike)
