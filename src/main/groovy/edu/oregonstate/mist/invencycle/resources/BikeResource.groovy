@@ -110,8 +110,7 @@ class BikeResource extends Resource {
         Bike currentBike = bikeDAO.getById(id)
 
         if (!currentBike) {
-            returnResponse = badRequest("Bike ID does not exist. Use a POST request to create a new bike.").build()
-            return(returnResponse)
+            return(badRequest("Bike ID does not exist. Use a POST request to create a new bike.").build())
         }
         try {
             copyProperties(userBike, currentBike)
