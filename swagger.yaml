@@ -1,78 +1,249 @@
 swagger: '2.0'
+
 info:
-  title: Web API Skeleton
-  description: Skeleton for Dropwizard Web APIs
-  version: '0.0'
-  license:
-    name: GNU Affero General Public License Version 3
-    url: http://www.gnu.org/licenses/agpl-3.0.en.html
-externalDocs:
-  description: GitHub Repository
-  url: https://github.com/osu-mist/web-api-skeleton
-host: localhost
-schemes:
-  - http
-basePath: /api/v0
-consumes:
-  - text/plain
-produces:
-  - text/plain
+  version: "1"
+  title: Invencycle API
+
+# Describe your paths here
 paths:
-  /:
+  # This is a path endpoint. Change it.
+  /bikes:
+    # This is a HTTP operation
     get:
-      summary: Get information
-      description: Build and runtime information about the application.
-      responses:
-        200:
-          description: Object containing information
-          schema:
-            $ref: '#/definitions/Info'
-  /sample:
-    get:
-      summary: Get message
-      description: This is a sample resource that returns a short message.
-      responses:
-        200:
-          description: A short message
-          schema:
-            type: string
-        404:
-          description: Not found
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      summary: Post message
-      description: This is a sample resource that returns the message it receives.
+      tags:
+       - bikes
+      # Describe this verb here. Note: you can use markdown
+      description: "Gets bikes, their components, and specifications."
+      # This is array of GET operation parameters:
+      produces:
+        - application/json
       parameters:
-        - name: message
-          in: body
-          schema:
-            type: string
-          required: true
+        - in: query
+          name: make
+          description: "Search through bikes by brand."
+          required: false
+          type: string
+        - in: query
+          name: model
+          description: "Search through bikes by model"
+          required: false
+          type: string
+        - in: query
+          name: type
+          description: "Search through bikes by type of bike"
+          required: false
+          type: string
+        # Expected responses for this operation:
       responses:
-        200:
-          description: The message received
+        # Response code
+        "200":
+          description: "Successful response"
           schema:
-            type: string
-        404:
-          description: Not found
+            $ref: "#/definitions/Attributes"
+        "404":
+          description: "Not Found"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
+        "500":
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Errors"
+    post:
+      tags:
+      - bikes
+      description: "Adds a new bike."
+      produces:
+        - application/json
+      parameters: 
+        - name: body
+          in: body
+          description: "Bike data that will be added to the database."
+          required: true
+          schema:
+            $ref: "#/definitions/Attributes"
+      responses:
+        "200":
+          description: Successful response
+        "204":
+          description: No content
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "405":
+          description: Invalid input
+        "500":
+          description: Internal server error
+
+
+  /bikes/{bikeID}:
+    get:
+      tags:
+        - bikes
+      description: "Find bikes by bike ID"
+      produces:
+        - application/json
+      parameters:
+        - name: bikeID
+          in: path
+          description: "Bike ID to be searched by"
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/Attributes"
+        "404":
+          description: "Resource not found"
+          schema:
+            $ref: "#/definitions/Errors"
+        "500":
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Errors"
+            
+    put:
+      tags:
+        - bikes
+      description: "Change bike or component information or add components"
+      produces:
+        - application/json
+      parameters:
+        - name: bikeID
+          in: path
+          description: "Bike ID to be updated"
+          required: true
+          type: integer
+
+        - name: body
+          in: body
+          description: "Bike data that should be updated."
+          required: true
+          schema:
+            $ref: "#/definitions/Attributes"
+      responses:
+        "200":
+          description: Successful response
+        "201":
+          description: Resource created
+        "204":
+          description: No content
+        "401":
+          description: Unauthorized
+        "405":
+          description: Invalid input
+        "500":
+          description: Internal server error
+    
+    delete:
+      tags:
+        - bikes
+      description: "Delete an entire bike"
+      produces:
+        - application/json
+      parameters:
+        - name: bikeID
+          in: path
+          description: "Bike ID to be searched by"
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Successful response
+        "204":
+          description: No content
+        "401":
+          description: Unauthorized
+        "405":
+          description: Invalid input
+        "500":
+          description: Internal server error
+          
 definitions:
-  Info:
+  
+  Attributes:
     properties:
-      name:
-        type: string
-      time:
+      id:
         type: integer
-      commit:
+      make:
         type: string
-      documentation:
+      model:
         type: string
+      year: 
+        type: integer
+      type: 
+        type: string
+        description: "Acceptable types are Mountain Trail, Mountain XC, Mountain Enduro, Road, Road Gravel, and Cyclocross."
+      frame_size_name:
+        type: string
+      frame_size_cm:
+        type: integer
+      msrp:
+        type: integer
+      derailuer_make_front:
+        type: string
+      derailuer_model_front:
+        type: string
+      derailuer_speeds_front:
+        type: integer
+      derailuer_make_rear:
+        type: string
+      derailuer_model_rear:
+        type: string
+      derailuer_speeds_rear:
+        type: integer
+      fork_make:
+        type: string
+      fork_model:
+        type: string
+      fork_travel:
+        type: integer
+      shock_make:
+        type: string
+      shock_model:
+        type: string
+      shock_travel:
+        type: integer
+      rim_make_front:
+        type: string
+      rim_model_front:
+        type: string
+      wheel_size_front:
+        type: integer
+      hub_make_front:
+        type: string
+      hub_model_front:
+        type: string
+      rim_make_rear:
+        type: string
+      rim_model_rear:
+        type: string
+      wheel_size_rear:
+        type: integer
+      hub_make_rear:
+        type: string
+      hub_model_rear:
+        type: string
+      brake_make_front:
+        type: string
+      brake_model_front:
+        type: string
+      brake_rotor_size_front:
+        type: integer
+      brake_make_rear:
+        type: string
+      brake_model_rear:
+        type: string
+      brake_rotor_size_rear:
+        type: integer
+
   Error:
+    type: object
     properties:
       status:
         type: integer
+        format: int32
       developerMessage:
         type: string
       userMesage:
@@ -81,3 +252,9 @@ definitions:
         type: integer
       details:
         type: string
+
+  Errors:
+    title: ArrayOfErrors
+    type: array
+    items:
+      $ref: "#/definitions/Error"
