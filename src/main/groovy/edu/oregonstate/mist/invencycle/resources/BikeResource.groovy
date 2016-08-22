@@ -95,6 +95,11 @@ class BikeResource extends Resource {
 
     /**
      * PUT bike with ID
+     *
+     * This method checks the bike attributes submitted and only updates the database
+     * with the attributes that aren't null. Null submitted attributes do not affect
+     * the attributes stored in the database.
+     *
      */
     @PUT
     @Path('{id: \\d+}')
@@ -106,20 +111,20 @@ class BikeResource extends Resource {
 
         if (!currentBike) {
             returnResponse = badRequest("Bike ID does not exist. Use a POST request to create a new bike.").build()
-        } else {
+            return(returnResponse)
+        }
+        try {
             copyProperties(userBike, currentBike)
-            try {
-                updateBike(currentBike)
-                returnResponse = Response.ok("Bike successfully updated").build()
-            } catch (Exception e) {
-                String validationErrorMsg = getDataError(e.cause.toString())
+            updateBike(currentBike)
+            returnResponse = Response.ok("Bike successfully updated").build()
+        } catch (Exception e) {
+            String validationErrorMsg = getDataError(e.cause.toString())
 
-                if (!(validationErrorMsg.isEmpty())) {
-                    returnResponse = badRequest(validationErrorMsg).build()
-                } else {
-                    logger.error("Exception while calling putBike", e)
-                    returnResponse = internalServerError("Internal server error").build()
-                }
+            if (!(validationErrorMsg.isEmpty())) {
+                returnResponse = badRequest(validationErrorMsg).build()
+            } else {
+                logger.error("Exception while calling putBike", e)
+                returnResponse = internalServerError("Internal server error").build()
             }
         }
         returnResponse
